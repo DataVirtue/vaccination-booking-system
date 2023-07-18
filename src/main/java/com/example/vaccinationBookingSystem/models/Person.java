@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Getter
 @Setter
@@ -31,5 +34,8 @@ public class Person {
     Gender gender;
     boolean isDose1Taken = false;
     boolean isDose2Taken = false;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    List<Dose> doseList = new ArrayList<>();
 
 }
