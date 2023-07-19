@@ -1,7 +1,7 @@
-package com.example.vaccinationBookingSystem.services;
+package com.example.vaccinationBookingSystem.service;
 
-import com.example.vaccinationBookingSystem.models.Dose;
-import com.example.vaccinationBookingSystem.repositories.DoseRepository;
+import com.example.vaccinationBookingSystem.model.Dose;
+import com.example.vaccinationBookingSystem.repository.DoseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

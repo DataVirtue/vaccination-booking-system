@@ -1,4 +1,4 @@
-package com.example.vaccinationBookingSystem.exceptions;
+package com.example.vaccinationBookingSystem.exception;
 
 public class DoctorNotFoundException extends RuntimeException {
     public DoctorNotFoundException(String message){

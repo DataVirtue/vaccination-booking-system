@@ -1,7 +1,7 @@
-package com.example.vaccinationBookingSystem.models;
+package com.example.vaccinationBookingSystem.model;
 
 
-import com.example.vaccinationBookingSystem.Enums.DoseType;
+import com.example.vaccinationBookingSystem.Enum.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,24 +9,30 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Dose {
+public class Doctor {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @Column(nullable = false, unique = true)
-    String doseId;
+    String name;
+
+    int age;
+
+    @Column(unique = true)
+    String emailId;
+
 
     @Enumerated(value = EnumType.STRING)
-    DoseType doseType;
+    Gender gender;
+
 
     @ManyToOne
     @JoinColumn
-    Person person;
-
-
+    VaccinationCenter vaccinationCenter;
 
 }

@@ -1,13 +1,10 @@
-package com.example.vaccinationBookingSystem.models;
+package com.example.vaccinationBookingSystem.model;
 
 
-import com.example.vaccinationBookingSystem.Enums.CenterType;
+import com.example.vaccinationBookingSystem.Enum.CenterType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.web.bind.annotation.Mapping;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class VaccinationCenter {
 
     @Id

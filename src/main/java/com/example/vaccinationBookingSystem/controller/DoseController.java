@@ -1,8 +1,8 @@
-package com.example.vaccinationBookingSystem.controllers;
+package com.example.vaccinationBookingSystem.controller;
 
 
-import com.example.vaccinationBookingSystem.models.Dose;
-import com.example.vaccinationBookingSystem.services.DoseService;
+import com.example.vaccinationBookingSystem.model.Dose;
+import com.example.vaccinationBookingSystem.service.DoseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package com.example.vaccinationBookingSystem.models;
+package com.example.vaccinationBookingSystem.model;
 
-import com.example.vaccinationBookingSystem.Enums.Gender;
+import com.example.vaccinationBookingSystem.Enum.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

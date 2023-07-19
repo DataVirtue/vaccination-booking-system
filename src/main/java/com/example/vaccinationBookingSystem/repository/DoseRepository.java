@@ -1,6 +1,6 @@
-package com.example.vaccinationBookingSystem.repositories;
+package com.example.vaccinationBookingSystem.repository;
 
-import com.example.vaccinationBookingSystem.models.Dose;
+import com.example.vaccinationBookingSystem.model.Dose;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

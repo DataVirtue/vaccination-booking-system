@@ -1,4 +1,4 @@
-package com.example.vaccinationBookingSystem.Enums;
+package com.example.vaccinationBookingSystem.Enum;
 
 public enum CenterType {
     PRIVATE,
