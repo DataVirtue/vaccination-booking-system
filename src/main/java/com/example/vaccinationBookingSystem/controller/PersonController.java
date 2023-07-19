@@ -2,6 +2,9 @@ package com.example.vaccinationBookingSystem.controller;
 
 
 
+import com.example.vaccinationBookingSystem.Enum.DoseType;
+import com.example.vaccinationBookingSystem.dto.request.PersonRequestDto;
+import com.example.vaccinationBookingSystem.dto.response.PersonResponseDto;
 import com.example.vaccinationBookingSystem.model.Person;
 import com.example.vaccinationBookingSystem.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,31 +20,19 @@ public class PersonController {
     PersonService personService;
 
     @PostMapping("/add")
-    public ResponseEntity addPerson(@RequestBody Person person){
-        System.out.println("api hit");
-        try {
-            Person person1 = personService.addPerson(person);
+    public ResponseEntity addPerson(@RequestBody PersonRequestDto personRequestDto){
 
-            return new ResponseEntity(person1, HttpStatus.CREATED);
+        try {
+            PersonResponseDto personResponseDto = personService.addPerson(personRequestDto);
+
+            return new ResponseEntity(personResponseDto, HttpStatus.CREATED);
         }catch (Exception e){
             System.out.println(e);
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
 
     }
-    @PostMapping("/give-dose1")
-    public ResponseEntity giveVaccine(@RequestParam("personId")int personId,@RequestParam("doseId")int doseId){
 
-        try {
-            Person person1 = personService.giveDose1(personId,doseId);
-            return new ResponseEntity(person1, HttpStatus.ACCEPTED);
-
-        }catch (Exception e){
-//            System.out.println(e);
-            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
-
-    }
 
 
 }

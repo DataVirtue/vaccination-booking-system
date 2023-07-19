@@ -1,6 +1,8 @@
 package com.example.vaccinationBookingSystem.controller;
 
 
+import com.example.vaccinationBookingSystem.dto.request.VaccinationCenterRequestDto;
+import com.example.vaccinationBookingSystem.dto.response.VaccinationCenterResponseDto;
 import com.example.vaccinationBookingSystem.model.VaccinationCenter;
 import com.example.vaccinationBookingSystem.service.VaccinationCenterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,11 @@ public class VaccinationCenterController {
     VaccinationCenterService vaccinationCenterService;
 
     @PostMapping("/add")
-    public ResponseEntity addVaccinationCenter(@RequestBody VaccinationCenter vaccinationCenter){
+    public ResponseEntity addVaccinationCenter(@RequestBody VaccinationCenterRequestDto vaccinationCenterRequestDto){
 
         try {
-            VaccinationCenter createdVaccinationCenter = vaccinationCenterService.addVaccinationCenter(vaccinationCenter);
-            return new ResponseEntity(createdVaccinationCenter, HttpStatus.CREATED);
+            VaccinationCenterResponseDto vaccinationCenterResponseDto = vaccinationCenterService.addVaccinationCenter(vaccinationCenterRequestDto);
+            return new ResponseEntity(vaccinationCenterResponseDto, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity("Cannot Create Vaccination Center", HttpStatus.BAD_REQUEST);
         }

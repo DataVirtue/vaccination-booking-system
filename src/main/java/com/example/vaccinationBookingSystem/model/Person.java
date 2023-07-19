@@ -23,6 +23,7 @@ public class Person {
 
     int aadharCardNo;
 
+    int age;
 
     @Column(nullable = false)
     String name;
@@ -32,8 +33,8 @@ public class Person {
 
     @Enumerated(value = EnumType.STRING)
     Gender gender;
-    boolean isDose1Taken = false;
-    boolean isDose2Taken = false;
+    boolean dose1Taken = false;
+    boolean dose2Taken = false;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     List<Dose> doseList = new ArrayList<>();

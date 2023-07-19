@@ -1,6 +1,11 @@
 package com.example.vaccinationBookingSystem.service;
 
 
+import com.example.vaccinationBookingSystem.Enum.DoseType;
+import com.example.vaccinationBookingSystem.dto.request.PersonRequestDto;
+import com.example.vaccinationBookingSystem.dto.response.PersonResponseDto;
+import com.example.vaccinationBookingSystem.exception.DoseAlreadyTakenException;
+import com.example.vaccinationBookingSystem.exception.PersonNotFoundException;
 import com.example.vaccinationBookingSystem.model.Dose;
 import com.example.vaccinationBookingSystem.model.Person;
 import com.example.vaccinationBookingSystem.repository.DoseRepository;
@@ -9,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PersonService {
@@ -19,42 +25,26 @@ public class PersonService {
     @Autowired
     DoseRepository doseRepository;
 
-    public Person addPerson(Person person) {
+    public PersonResponseDto addPerson(PersonRequestDto personRequestDto) {
+        Person person  = new Person();
 
-        return personRepository.save(person);
+        person.setAadharCardNo(personRequestDto.getAadharCardNo());
+        person.setGender(personRequestDto.getGender());
+        person.setName(personRequestDto.getName());
+        person.setEmailId(personRequestDto.getEmailId());
+        person.setAge(personRequestDto.getAge());
 
-    }
+        Person savedPerson = personRepository.save(person);
 
-    public Person giveDose1(int personId, int doseId) {
+        PersonResponseDto personResponseDto = new PersonResponseDto();
+        personResponseDto.setName(savedPerson.getName());
+        personResponseDto.setEmailId(savedPerson.getEmailId());
 
-        Optional<Person> optionalPerson = personRepository.findById(personId);
+        personResponseDto.setDose1Taken(savedPerson.isDose1Taken());
+        personResponseDto.setDose2Taken(savedPerson.isDose2Taken());
 
-        Optional<Dose> optionalDose = doseRepository.findById(doseId);
-
-        if (optionalPerson.isEmpty()) {
-            throw new RuntimeException("Person Not Found");
-        }
-
-
-        if (optionalDose.isEmpty()) {
-            throw new RuntimeException("Invalid Dose Id");
-        }
-
-        Dose dose = optionalDose.get();
-        Person person = optionalPerson.get();
-
-        if (person.isDose1Taken()) {
-            throw new RuntimeException("Dose 1 Already Taken");
-        }
-
-
-        dose.setPerson(person);
-
-        person.setDose1Taken(true);
-
-        System.out.println(doseRepository.save(dose));
-
-        return personRepository.save(person);
+        return personResponseDto;
 
     }
+
 }
