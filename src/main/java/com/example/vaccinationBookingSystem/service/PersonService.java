@@ -10,6 +10,7 @@ import com.example.vaccinationBookingSystem.model.Dose;
 import com.example.vaccinationBookingSystem.model.Person;
 import com.example.vaccinationBookingSystem.repository.DoseRepository;
 import com.example.vaccinationBookingSystem.repository.PersonRepository;
+import com.example.vaccinationBookingSystem.transformer.PersonTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,22 +27,12 @@ public class PersonService {
     DoseRepository doseRepository;
 
     public PersonResponseDto addPerson(PersonRequestDto personRequestDto) {
-        Person person  = new Person();
 
-        person.setAadharCardNo(personRequestDto.getAadharCardNo());
-        person.setGender(personRequestDto.getGender());
-        person.setName(personRequestDto.getName());
-        person.setEmailId(personRequestDto.getEmailId());
-        person.setAge(personRequestDto.getAge());
+        Person person = PersonTransformer.personRequestDtoToPerson(personRequestDto);
 
         Person savedPerson = personRepository.save(person);
 
-        PersonResponseDto personResponseDto = new PersonResponseDto();
-        personResponseDto.setName(savedPerson.getName());
-        personResponseDto.setEmailId(savedPerson.getEmailId());
-
-        personResponseDto.setDose1Taken(savedPerson.isDose1Taken());
-        personResponseDto.setDose2Taken(savedPerson.isDose2Taken());
+        PersonResponseDto personResponseDto = PersonTransformer.personToPersonResponseDto(savedPerson);
 
         return personResponseDto;
 

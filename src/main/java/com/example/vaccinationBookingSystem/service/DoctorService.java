@@ -10,6 +10,8 @@ import com.example.vaccinationBookingSystem.model.Doctor;
 import com.example.vaccinationBookingSystem.model.VaccinationCenter;
 import com.example.vaccinationBookingSystem.repository.DoctorRepository;
 import com.example.vaccinationBookingSystem.repository.VaccinationCenterRepository;
+import com.example.vaccinationBookingSystem.transformer.DoctorTransformer;
+import com.example.vaccinationBookingSystem.transformer.VaccinationCenterTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,33 +27,18 @@ public class DoctorService {
     @Autowired
     VaccinationCenterRepository vaccinationCenterRepository;
 
-    private DoctorResponseDto convertDoctorToResponseDto(Doctor doctor, String message){
-        DoctorResponseDto doctorResponseDto = new DoctorResponseDto();
-        doctorResponseDto.setName(doctor.getName());
-        doctorResponseDto.setMessage(message);
+    private DoctorResponseDto convertDoctorToResponseDto(Doctor doctor){
+        DoctorResponseDto doctorResponseDto = DoctorTransformer.DoctorToResponseDto(doctor);
 
-        VaccinationCenterResponseDto  vaccinationCenterResponseDto = new VaccinationCenterResponseDto();
-
-        vaccinationCenterResponseDto.setCenterName(doctor.getVaccinationCenter().getCenterName());
-
-        vaccinationCenterResponseDto.setAddress(doctor.getVaccinationCenter().getAddress());
-
-        vaccinationCenterResponseDto.setCenterType(doctor.getVaccinationCenter().getCenterType());
+        VaccinationCenterResponseDto vaccinationCenterResponseDto
+                = VaccinationCenterTransformer.vaccinationCenterToVaccinationCenterResponseDto(doctor.getVaccinationCenter());
 
         doctorResponseDto.setVaccinationCenter(vaccinationCenterResponseDto);
-
         return doctorResponseDto;
     }
 
     public DoctorResponseDto addDoctor(DoctorRequestDto doctorRequestDto) {
-        Doctor doctor = new Doctor();
-        doctor.setAge(doctorRequestDto.getAge());
-
-        doctor.setName(doctorRequestDto.getName());
-
-        doctor.setEmailId(doctorRequestDto.getEmailId());
-
-        doctor.setGender(doctorRequestDto.getGender());
+        Doctor doctor = DoctorTransformer.doctorRequestDtoToDoctor(doctorRequestDto);
 
         Optional<VaccinationCenter> optionalVaccinationCenter = vaccinationCenterRepository.findById(doctorRequestDto.getVaccinationCenterId());
 
@@ -61,7 +48,9 @@ public class DoctorService {
         doctor.setVaccinationCenter(optionalVaccinationCenter.get());
 
         Doctor savedDoctor = doctorRepository.save(doctor);
-        return convertDoctorToResponseDto(savedDoctor, "Dr. " + savedDoctor.getName() + " Added Successfully");
+
+
+        return convertDoctorToResponseDto(savedDoctor);
     }
 
     public DoctorResponseDto getDoctor(Integer doctorId) {
@@ -72,6 +61,6 @@ public class DoctorService {
             throw new DoctorNotFoundException("Invalid Id");
         }
 
-        return convertDoctorToResponseDto(optionalDoctor.get(),"");
+        return convertDoctorToResponseDto(optionalDoctor.get());
     }
 }

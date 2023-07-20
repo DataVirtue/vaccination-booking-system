@@ -8,6 +8,7 @@ import com.example.vaccinationBookingSystem.model.Dose;
 import com.example.vaccinationBookingSystem.model.Person;
 import com.example.vaccinationBookingSystem.repository.DoseRepository;
 import com.example.vaccinationBookingSystem.repository.PersonRepository;
+import com.example.vaccinationBookingSystem.transformer.DoseTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,12 +65,7 @@ public class DoseService {
 
         Dose savedDose = personRepository.save(person).getDoseList().get(0);
 
-        DoseResponseDto doseResponseDto = new DoseResponseDto();
+       return DoseTransformer.doseResponseDtoToDose(savedDose);
 
-        doseResponseDto.setDoseType(savedDose.getDoseType());
-        doseResponseDto.setDoseId(savedDose.getDoseId());
-        doseResponseDto.setVaccinationDate(savedDose.getVaccinationDate());
-        doseResponseDto.setPersonName(savedDose.getPerson().getName());
-        return doseResponseDto;
     }
 }

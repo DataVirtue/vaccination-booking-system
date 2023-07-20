@@ -1,19 +1,23 @@
 package com.example.vaccinationBookingSystem.dto.response;
 
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.vaccinationBookingSystem.Enum.Gender;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class DoctorResponseDto {
     String name;
-    String message;
+
+    int age;
+
+    String emailId;
+
+    Gender gender;
 
     VaccinationCenterResponseDto vaccinationCenter;
 

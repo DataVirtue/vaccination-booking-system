@@ -3,16 +3,14 @@ package com.example.vaccinationBookingSystem.dto.response;
 
 import com.example.vaccinationBookingSystem.Enum.Gender;
 import jakarta.persistence.Column;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class PersonResponseDto {
 
 
