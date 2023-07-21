@@ -15,6 +15,8 @@ import com.example.vaccinationBookingSystem.transformer.VaccinationCenterTransfo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -28,7 +30,7 @@ public class DoctorService {
     VaccinationCenterRepository vaccinationCenterRepository;
 
     private DoctorResponseDto convertDoctorToResponseDto(Doctor doctor){
-        DoctorResponseDto doctorResponseDto = DoctorTransformer.DoctorToResponseDto(doctor);
+        DoctorResponseDto doctorResponseDto = DoctorTransformer.doctorToResponseDto(doctor);
 
         VaccinationCenterResponseDto vaccinationCenterResponseDto
                 = VaccinationCenterTransformer.vaccinationCenterToVaccinationCenterResponseDto(doctor.getVaccinationCenter());
@@ -62,5 +64,15 @@ public class DoctorService {
         }
 
         return convertDoctorToResponseDto(optionalDoctor.get());
+    }
+
+    public List<DoctorResponseDto> getByAgeGreaterThan(int age) {
+
+        List<Doctor> doctors = doctorRepository.getByAgeGreaterThan(age);
+        List<DoctorResponseDto> doctorResponseDtoList = new ArrayList<>();
+        for(Doctor doctor: doctors){
+            doctorResponseDtoList.add(DoctorTransformer.doctorToResponseDto(doctor));
+        }
+        return doctorResponseDtoList;
     }
 }

@@ -40,4 +40,7 @@ public class Person {
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     List<Dose> doseList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "person")
+    List<Appointment> appointmentList = new ArrayList<>();
+
 }

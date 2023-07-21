@@ -38,4 +38,15 @@ public class PersonService {
 
     }
 
+    public PersonResponseDto updateEmail(String oldEmail, String newEmail) {
+
+        Person person = personRepository.findByEmailId(oldEmail);
+        if(person==null)
+            throw new PersonNotFoundException("Email doesn't exist");
+
+        person.setEmailId(newEmail);
+        Person savedPerson = personRepository.save(person);
+
+        return PersonTransformer.personToPersonResponseDto(person);
+    }
 }

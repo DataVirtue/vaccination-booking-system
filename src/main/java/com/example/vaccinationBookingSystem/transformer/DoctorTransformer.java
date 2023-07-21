@@ -16,7 +16,7 @@ public class DoctorTransformer {
                 .build();
     }
 
-    public static DoctorResponseDto DoctorToResponseDto(Doctor doctor){
+    public static DoctorResponseDto doctorToResponseDto(Doctor doctor){
 
        return DoctorResponseDto.builder()
                 .name(doctor.getName())
