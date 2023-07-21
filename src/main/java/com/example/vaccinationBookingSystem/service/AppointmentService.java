@@ -12,6 +12,8 @@ import com.example.vaccinationBookingSystem.repository.DoctorRepository;
 import com.example.vaccinationBookingSystem.repository.PersonRepository;
 import com.example.vaccinationBookingSystem.transformer.AppointmentTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,9 @@ public class AppointmentService {
 
     @Autowired
     DoctorRepository doctorRepository;
+
+    @Autowired
+    JavaMailSender javaMailSender;
 
     public AppointmentResponseDto bookAppointment(int personId, int doctorId) {
 
@@ -59,6 +64,17 @@ public class AppointmentService {
         personRepository.save(person);
         doctorRepository.save(doctor);
 
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom("mail.service939@gmail.com");
+        simpleMailMessage.setTo(person.getEmailId());
+        simpleMailMessage.setSubject("Congratulations! Appointment Booked");
+        simpleMailMessage.setText("Congratulations! "+ person.getName() +
+                " your Appointment has been booked for " + savedAppointment.getAppointmentDate() +
+                " with " + doctor.getName() +
+                " At " + doctor.getVaccinationCenter().getCenterName() +
+                " " + doctor.getVaccinationCenter().getAddress());
+
+        javaMailSender.send(simpleMailMessage);
 
         return AppointmentTransformer.appoointmentToAppointmentResponseDto(savedAppointment);
 
