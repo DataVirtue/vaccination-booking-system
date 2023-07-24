@@ -21,20 +21,19 @@ public class DoctorController {
     DoctorService doctorService;
 
     @PostMapping("/add")
-    public ResponseEntity addDoctor(@RequestBody DoctorRequestDto doctor){
+    public ResponseEntity addDoctor(@RequestBody DoctorRequestDto doctor) {
         try {
             DoctorResponseDto createdDoctor = doctorService.addDoctor(doctor);
             return new ResponseEntity(createdDoctor, HttpStatus.CREATED);
-        }
-        catch (VaccinationCenterNotFoundException e){
+        } catch (VaccinationCenterNotFoundException e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
+
     @GetMapping("/{doctorId}")
     public ResponseEntity getDoctor(@PathVariable Integer doctorId) {
         try {
@@ -47,21 +46,34 @@ public class DoctorController {
             return new ResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-        @GetMapping("/get-by-age-greater-than")
-        public ResponseEntity getByAgeGreaterThan(@RequestParam int age){
 
-            List<DoctorResponseDto> respone = new ArrayList<>();
+    @GetMapping("/get-by-age-greater-than")
+    public ResponseEntity getByAgeGreaterThan(@RequestParam int age) {
 
-        try{
+        List<DoctorResponseDto> respone = new ArrayList<>();
+
+        try {
             respone = doctorService.getByAgeGreaterThan(age);
-            return new ResponseEntity(respone,HttpStatus.FOUND);
+            return new ResponseEntity(respone, HttpStatus.FOUND);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity("Something Went Wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @GetMapping("/get-doctor-with-highest-no-of-appointments")
+    public ResponseEntity getDoctorWithHighestNoOfAppointments() {
+
+        try {
+            DoctorResponseDto doctorResponseDto = doctorService.getDoctorWithHighestNoOfAppointments();
+            return new ResponseEntity(doctorResponseDto, HttpStatus.FOUND);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity("Something Went Wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-
+    }
 }

@@ -17,4 +17,8 @@ public interface DoctorRepository extends JpaRepository<Doctor,Integer>{
     List<Doctor> getByAgeGreaterThan(@Param("age") int age);
 
 
+    @Query(value = "select doctor.* from doctor inner join appointment on doctor.id=appointment.doctor_id group by doctor_id order by count(*) desc limit 1",nativeQuery = true)
+    Doctor getDoctorWithHighestNoOfAppointments();
+
+
 }

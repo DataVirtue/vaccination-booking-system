@@ -17,6 +17,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,6 +30,7 @@ public class AppointmentService {
 
     @Autowired
     PersonRepository personRepository;
+
 
     @Autowired
     DoctorRepository doctorRepository;
@@ -76,8 +79,48 @@ public class AppointmentService {
 
         javaMailSender.send(simpleMailMessage);
 
-        return AppointmentTransformer.appoointmentToAppointmentResponseDto(savedAppointment);
+        AppointmentResponseDto appointmentResponseDto = AppointmentTransformer.appoointmentToAppointmentResponseDto(savedAppointment);
+        appointmentResponseDto.setMessage("Appointment Booking Successful");
 
+        return appointmentResponseDto;
+
+
+    }
+
+    public List<AppointmentResponseDto> getAllAppointmentsForPerson(int personId) {
+        List<AppointmentResponseDto> appointmentResponseDtoList = new ArrayList<>();
+
+        Optional<Person> optionalPerson = personRepository.findById(personId);
+
+        if(optionalPerson.isEmpty()){
+            throw new PersonNotFoundException("Invalid Person Id");
+        }
+
+        Person person = optionalPerson.get();
+
+        for(Appointment appointment: person.getAppointmentList()){
+            appointmentResponseDtoList.add(AppointmentTransformer.appoointmentToAppointmentResponseDto(appointment));
+        }
+        return appointmentResponseDtoList;
+
+    }
+
+    public List<AppointmentResponseDto> getAllAppointmentsForDoctor(int doctorId) {
+
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
+
+        if(optionalDoctor.isEmpty()){
+            throw new DoctorNotFoundException("Invalid Doctor Id");
+        }
+        Doctor doctor = optionalDoctor.get();
+
+        List<AppointmentResponseDto> appointmentResponseDtoList = new ArrayList<>();
+
+
+        for(Appointment appointment: doctor.getAppointmentList()){
+            appointmentResponseDtoList.add(AppointmentTransformer.appoointmentToAppointmentResponseDto(appointment));
+        }
+        return appointmentResponseDtoList;
 
     }
 }

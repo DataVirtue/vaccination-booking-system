@@ -10,10 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/appointment")
@@ -41,6 +41,32 @@ public class AppointmentController {
         catch(Exception e){
             System.out.println(e.getMessage());
             return new ResponseEntity<>("Something went wrong",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/get-all-appointments-for-person/{personId}")
+    public ResponseEntity getAllAppointmentsForPerson(@PathVariable int personId){
+        try{
+            List<AppointmentResponseDto> response = appointmentService.getAllAppointmentsForPerson(personId);
+            return new ResponseEntity(response,HttpStatus.ACCEPTED);
+        }catch (PersonNotFoundException e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity("Something went wrong",HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/get-all-appointments-for-doctor/{doctorId}")
+    public ResponseEntity getAllAppointmentsForDoctor(@PathVariable int doctorId){
+        try{
+            List<AppointmentResponseDto> response = appointmentService.getAllAppointmentsForDoctor(doctorId);
+            return new ResponseEntity(response,HttpStatus.ACCEPTED);
+        }catch (DoctorNotFoundException e){
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity("Something went wrong",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

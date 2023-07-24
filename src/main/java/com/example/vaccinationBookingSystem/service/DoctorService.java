@@ -75,4 +75,15 @@ public class DoctorService {
         }
         return doctorResponseDtoList;
     }
+
+    public DoctorResponseDto getDoctorWithHighestNoOfAppointments() {
+
+        Doctor doctor = doctorRepository.getDoctorWithHighestNoOfAppointments();
+
+        DoctorResponseDto doctorResponseDto =  DoctorTransformer.doctorToResponseDto(doctor);
+        VaccinationCenterResponseDto vaccinationCenterResponseDto = VaccinationCenterTransformer.vaccinationCenterToVaccinationCenterResponseDto(doctor.getVaccinationCenter());
+        doctorResponseDto.setVaccinationCenter(vaccinationCenterResponseDto);
+
+        return doctorResponseDto;
+    }
 }

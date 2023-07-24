@@ -13,7 +13,6 @@ public class AppointmentTransformer {
                 .centerName(appointment.getDoctor().getVaccinationCenter().getCenterName())
                 .centerAddress(appointment.getDoctor().getVaccinationCenter().getAddress())
                 .doctorName(appointment.getDoctor().getName())
-                .message("Appointment Booking Successful")
                 .build();
     }
 }

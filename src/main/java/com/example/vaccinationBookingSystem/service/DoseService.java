@@ -2,7 +2,7 @@ package com.example.vaccinationBookingSystem.service;
 
 import com.example.vaccinationBookingSystem.Enum.DoseType;
 import com.example.vaccinationBookingSystem.dto.response.DoseResponseDto;
-import com.example.vaccinationBookingSystem.exception.DoseAlreadyTakenException;
+import com.example.vaccinationBookingSystem.exception.DoseEligibityException;
 import com.example.vaccinationBookingSystem.exception.PersonNotFoundException;
 import com.example.vaccinationBookingSystem.model.Dose;
 import com.example.vaccinationBookingSystem.model.Person;
@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
 
 @Service
 public class DoseService {
@@ -38,7 +36,7 @@ public class DoseService {
         return optionalDose.get();
     }
 
-    public DoseResponseDto giveDose1(int personId, DoseType doseType) {
+    private Person getPerson(int personId){
 
         Optional<Person> optionalPerson = personRepository.findById(personId);
 
@@ -46,26 +44,58 @@ public class DoseService {
         if (optionalPerson.isEmpty()) {
             throw new PersonNotFoundException("Invalid person Id");
         }
+        return optionalPerson.get();
+    }
 
-        Person person = optionalPerson.get();
+
+    public DoseResponseDto giveDose1(int personId, DoseType doseType) {
+
+        Person person = getPerson(personId);
+
 
         if (person.isDose1Taken()) {
-            throw new DoseAlreadyTakenException("Dose 1 Already Taken");
+            throw new DoseEligibityException("Dose 1 Already Taken");
         }
+
         person.setDose1Taken(true);
 
-        Dose dose = new Dose();
-        dose.setDoseType(doseType);
-        dose.setDoseId(UUID.randomUUID().toString());
-        dose.setPerson(person);
+        Dose dose = DoseTransformer.doseRequestToDose(doseType);
 
         dose.setPerson(person);
+
 
         person.getDoseList().add(dose);
 
         Dose savedDose = personRepository.save(person).getDoseList().get(0);
 
-       return DoseTransformer.doseResponseDtoToDose(savedDose);
+       return DoseTransformer.doseToDoseResponeDto(savedDose);
+
+    }
+
+    public DoseResponseDto giveDose2(int personId, DoseType doseType) {
+
+        Person person = getPerson(personId);
+
+        if(!person.isDose1Taken()){
+            throw new DoseEligibityException("Cannot take dose 2 before dose 1");
+        }
+
+        if(person.isDose2Taken()){
+            throw new DoseEligibityException("Dose 2 Already Taken");
+        }
+
+        Dose dose = DoseTransformer.doseRequestToDose(doseType);
+
+        dose.setPerson(person);
+        person.setDose2Taken(true);
+
+        person.getDoseList().add(dose);
+
+        Dose savedDose = personRepository.save(person).getDoseList().get(0);
+
+        return DoseTransformer.doseToDoseResponeDto(savedDose);
+
+
 
     }
 }
