@@ -4,7 +4,6 @@ import com.example.vaccinationBookingSystem.Enum.CenterType;
 import com.example.vaccinationBookingSystem.dto.request.VaccinationCenterRequestDto;
 import com.example.vaccinationBookingSystem.dto.response.DoctorResponseDto;
 import com.example.vaccinationBookingSystem.dto.response.VaccinationCenterResponseDto;
-import com.example.vaccinationBookingSystem.exception.VaccinationCenterNotFoundException;
 import com.example.vaccinationBookingSystem.model.Doctor;
 import com.example.vaccinationBookingSystem.model.VaccinationCenter;
 import com.example.vaccinationBookingSystem.repository.DoctorRepository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VaccinationCenterService {
@@ -59,4 +57,12 @@ public class VaccinationCenterService {
     }
 
 
+    public VaccinationCenterResponseDto getCenterWithHighestNoOfDoctors() {
+
+        return VaccinationCenterTransformer.vaccinationCenterToVaccinationCenterResponseDto(vaccinationCenterRepository.getCenterWithHighestNoOfDoctors());
+    }
+
+    public VaccinationCenterResponseDto getCenterWithHighestNoOfDoctorsWithCenterType(CenterType centerType) {
+        return VaccinationCenterTransformer.vaccinationCenterToVaccinationCenterResponseDto(vaccinationCenterRepository.getCenterWithHighestNoOfDoctorsWithCenterType(centerType.toString()));
+    }
 }

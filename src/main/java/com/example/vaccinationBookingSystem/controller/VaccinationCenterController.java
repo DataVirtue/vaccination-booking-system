@@ -47,4 +47,32 @@ public class VaccinationCenterController {
         }
 
     }
+
+    @GetMapping("/get-center-with-highest-no-of-doctors")
+    public ResponseEntity getCenterWithHighestNoOfDoctors(){
+
+        try {
+            VaccinationCenterResponseDto responseDto = vaccinationCenterService.getCenterWithHighestNoOfDoctors();
+            return new ResponseEntity(responseDto,HttpStatus.FOUND);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @GetMapping("/get-center-with-highest-no-of-doctors-with-center-type")
+    public ResponseEntity getCenterWithHighestNoOfDoctorsWithCenterType(@RequestParam CenterType centerType){
+
+        try {
+            VaccinationCenterResponseDto responseDto = vaccinationCenterService.getCenterWithHighestNoOfDoctorsWithCenterType(centerType);
+            return new ResponseEntity(responseDto,HttpStatus.FOUND);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 }
