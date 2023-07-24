@@ -15,6 +15,7 @@ import com.example.vaccinationBookingSystem.transformer.VaccinationCenterTransfo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,5 +86,44 @@ public class DoctorService {
         doctorResponseDto.setVaccinationCenter(vaccinationCenterResponseDto);
 
         return doctorResponseDto;
+    }
+
+    public List<DoctorResponseDto> getDoctorByVaccinationCenter(int centerId) {
+
+        Optional<VaccinationCenter> vaccinationCenterOptional = vaccinationCenterRepository.findById(centerId);
+
+        if(vaccinationCenterOptional.isEmpty())
+            throw new VaccinationCenterNotFoundException("Vaccination Center not found");
+
+
+
+        List<Doctor> doctorList = doctorRepository.getDoctorByVaccinationCenter(vaccinationCenterOptional.get());
+
+        List<DoctorResponseDto> responseDtos = new ArrayList<>();
+
+        for(Doctor doctor: doctorList){
+            responseDtos.add(DoctorTransformer.doctorToResponseDto(doctor));
+        }
+        return responseDtos;
+    }
+
+    public DoctorResponseDto updateDoctor(int doctorId, String attribute, String value) {
+
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorId);
+
+        if(optionalDoctor.isEmpty()){
+            throw new DoctorNotFoundException("Invalid Id");
+        }
+        Doctor doctor = optionalDoctor.get();
+
+        if(attribute.equals("age")){
+            doctor.setAge(Integer.parseInt(value));
+
+        }else if(attribute.equals("emailId")){
+            doctor.setEmailId(value);
+        }else{
+            throw new RuntimeException("Bad Request Parameters");
+        }
+        return  DoctorTransformer.doctorToResponseDto(doctorRepository.save(doctor));
     }
 }

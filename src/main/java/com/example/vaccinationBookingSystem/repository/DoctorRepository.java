@@ -1,6 +1,7 @@
 package com.example.vaccinationBookingSystem.repository;
 
 import com.example.vaccinationBookingSystem.model.Doctor;
+import com.example.vaccinationBookingSystem.model.VaccinationCenter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +20,8 @@ public interface DoctorRepository extends JpaRepository<Doctor,Integer>{
 
     @Query(value = "select doctor.* from doctor inner join appointment on doctor.id=appointment.doctor_id group by doctor_id order by count(*) desc limit 1",nativeQuery = true)
     Doctor getDoctorWithHighestNoOfAppointments();
+
+    List<Doctor> getDoctorByVaccinationCenter(VaccinationCenter vaccinationCenter);
 
 
 }

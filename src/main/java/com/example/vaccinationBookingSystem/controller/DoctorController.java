@@ -76,4 +76,37 @@ public class DoctorController {
         }
 
     }
+
+    @GetMapping("/get-doctor-by-vaccination-center/{centerId}")
+    public ResponseEntity getDoctorByVaccinationCenter(@PathVariable int centerId) {
+
+        try {
+            List<DoctorResponseDto> responseDtos = doctorService.getDoctorByVaccinationCenter(centerId);
+            return new ResponseEntity(responseDtos, HttpStatus.FOUND);
+
+        }
+        catch (VaccinationCenterNotFoundException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new ResponseEntity("Something Went Wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @PutMapping("/update/{doctorId}")
+    public ResponseEntity updateDoctor(@PathVariable int doctorId, @RequestParam String attribute, @RequestParam String value) {
+        try {
+            DoctorResponseDto updatedDoctor = doctorService.updateDoctor(doctorId, attribute, value);
+            return new ResponseEntity(updatedDoctor, HttpStatus.CREATED);
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
 }
