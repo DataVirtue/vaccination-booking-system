@@ -1,5 +1,6 @@
 package com.example.vaccinationBookingSystem.repository;
 
+import com.example.vaccinationBookingSystem.Enum.CenterType;
 import com.example.vaccinationBookingSystem.model.Doctor;
 import com.example.vaccinationBookingSystem.model.VaccinationCenter;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,5 +24,7 @@ public interface DoctorRepository extends JpaRepository<Doctor,Integer>{
 
     List<Doctor> getDoctorByVaccinationCenter(VaccinationCenter vaccinationCenter);
 
+    @Query(value = " select doctor.* from doctor inner join vaccination_center on doctor.vaccination_center_id=vaccination_center.id where vaccination_center.center_type=:centerType", nativeQuery = true)
+    List<Doctor> getAllDoctorsWithCenterType(String centerType);
 
 }

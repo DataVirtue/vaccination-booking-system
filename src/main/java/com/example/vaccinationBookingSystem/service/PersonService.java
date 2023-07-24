@@ -11,6 +11,9 @@ import com.example.vaccinationBookingSystem.transformer.PersonTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class PersonService {
 
@@ -43,4 +46,73 @@ public class PersonService {
 
         return PersonTransformer.personToPersonResponseDto(person);
     }
+
+    public List<PersonResponseDto> getAllMalesGreaterThan(int age) {
+
+        List<PersonResponseDto> responseDtos = new ArrayList<>();
+        List<Person> personList = personRepository.getAllMalesGreaterThan(age);
+
+        for(Person person: personList){
+            responseDtos.add(PersonTransformer.personToPersonResponseDto(person));
+        }
+        return responseDtos;
+    }
+
+    public List<PersonResponseDto> getAllFemalesWithOneDoseTaken() {
+
+        List<PersonResponseDto> responseDtos = new ArrayList<>();
+        List<Person> personList = personRepository.getAllFemalesWithOneDoseTaken();
+
+        for(Person person: personList){
+            responseDtos.add(PersonTransformer.personToPersonResponseDto(person));
+        }
+        return responseDtos;
+    }
+
+    public List<PersonResponseDto> getFullyVaccinatedPeople() {
+
+        List<PersonResponseDto> responseDtos = new ArrayList<>();
+        List<Person> personList = personRepository.getFullyVaccinatedPeople();
+
+        for(Person person: personList){
+            responseDtos.add(PersonTransformer.personToPersonResponseDto(person));
+        }
+        return responseDtos;
+    }
+
+    public List<PersonResponseDto> getPeopleWithNoDoseTaken(){
+
+
+        List<PersonResponseDto> responseDtos = new ArrayList<>();
+        List<Person> personList = personRepository.getPeopleWithNoDoseTaken();
+
+        for(Person person: personList){
+            responseDtos.add(PersonTransformer.personToPersonResponseDto(person));
+        }
+        return responseDtos;
+
+    }
+
+    public List<PersonResponseDto> getAllFemalesWithOneDoseTakenAndAgeGreaterThan(int age){
+
+        List<PersonResponseDto> responseDtos = new ArrayList<>();
+        List<Person> personList = personRepository.getAllFemalesWithOneDoseTakenAndAgeGreaterThan(age);
+
+        for(Person person: personList){
+            responseDtos.add(PersonTransformer.personToPersonResponseDto(person));
+        }
+        return responseDtos;
+    }
+
+    public List<PersonResponseDto> getMalesWithBothDoseTakenAndAgeGreaterThan(int age){
+
+        List<PersonResponseDto> responseDtos = new ArrayList<>();
+        List<Person> personList = personRepository.getMalesWithBothDoseTakenAndAgeGreaterThan(age);
+
+        for(Person person: personList){
+            responseDtos.add(PersonTransformer.personToPersonResponseDto(person));
+        }
+        return responseDtos;
+    }
+
 }
